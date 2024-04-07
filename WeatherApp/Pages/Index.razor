@@ -1,0 +1,33 @@
+﻿@page "/"
+
+@inject WeatherService WeatherService
+
+<h1>Weather Forecast</h1>
+
+<input @bind="city" placeholder="Enter city name" />
+<button @onclick="GetWeather">Get Weather</button>
+
+@if (forecast != null)
+{
+    <p>Temperature in @forecast.Name: @forecast.Main.Temp°C</p>
+    <p>Humidity: @forecast.Humidity%</p>
+    <p>Wind Speed: @forecast.WindSpeed km/h</p>
+    <p>Conditions: @forecast.Condition</p>
+}
+
+@code {
+    private string city;
+    private WeatherForecast forecast;
+
+    private async Task GetWeather()
+    {
+        try
+        {
+            forecast = await WeatherService.GetWeatherForecastAsync(city);
+        }
+        catch (Exception ex)
+        {
+            // Implement error handling (e.g., show an error message)
+        }
+    }
+}
